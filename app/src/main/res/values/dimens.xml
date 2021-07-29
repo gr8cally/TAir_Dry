@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dry_time_card_height">108dp</dimen>
+    <dimen name="dry_time_gris_spacing">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+</resources>
