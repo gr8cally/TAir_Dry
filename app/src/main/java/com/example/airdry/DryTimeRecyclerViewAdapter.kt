@@ -2,9 +2,13 @@ package com.example.airdry
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
 import com.example.airdry.Network.ForecastResponse
 import com.example.airdry.Network.WeatherService
@@ -39,10 +43,15 @@ class DryTimeRecyclerViewAdapter (private val dryTimeList: List<DryTimeEntry>, p
         }
 
         holder.dryTimeImage.setOnClickListener {
-            val response = getForecastResponse()
-            val context = holder.dryTimeImage.context
-            val intent = Intent(context, TesterActivity::class.java)
-            context.startActivity(intent)
+            if (lat.isNullOrEmpty()){
+                Toast.makeText(context, "Please select a valid Location", Toast.LENGTH_SHORT).show()
+            }
+            else{
+                val context = holder.dryTimeImage.context
+                getForecastResponse(context, position)
+                lat = ""
+                lon = ""
+            }
 
 
         }
@@ -60,12 +69,13 @@ class DryTimeRecyclerViewAdapter (private val dryTimeList: List<DryTimeEntry>, p
 
         var BaseUrl = "https://api.openweathermap.org/"
         var AppId = "5d60dac58f977b6e57bae62db28dc160"
-        var lat = "35"
-        var lon = "139"
+        var lat = ""
+        var lon = ""
         var exclude = "minutely,daily"
+        var overallResponse: ForecastResponse? = null
     }
 
-    fun getForecastResponse(): ForecastResponse?{
+    private fun getForecastResponse(context: Context, position: Int): ForecastResponse?{
         var forecastResponse: ForecastResponse? = null
         val service = retrofitBuilder()
         val call = service.getForecastWeatherData(lat, lon, exclude, AppId)
@@ -78,6 +88,12 @@ class DryTimeRecyclerViewAdapter (private val dryTimeList: List<DryTimeEntry>, p
                 if (response.code() == 200) {
                     var weatherResponse = response.body()!!
                     forecastResponse = weatherResponse
+                    overallResponse = weatherResponse
+                    val intent = Intent(context, RecommendActivity::class.java)
+                    intent.putExtra("position", position.toString())
+                    //intent.putExtra("response", weatherResponse)
+                    Log.d("pam", weatherResponse.current?.wind_speed.toString())
+                    context.startActivity(intent)
                 }
             }
 
@@ -88,7 +104,7 @@ class DryTimeRecyclerViewAdapter (private val dryTimeList: List<DryTimeEntry>, p
         return forecastResponse
     }
 
-    fun retrofitBuilder():  WeatherService{
+    private fun retrofitBuilder():  WeatherService{
         val retrofit = Retrofit.Builder()
                 .baseUrl(BaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -96,5 +112,9 @@ class DryTimeRecyclerViewAdapter (private val dryTimeList: List<DryTimeEntry>, p
 
         val service = retrofit.create(WeatherService::class.java)
         return service
+    }
+
+    fun getForecast(): ForecastResponse? {
+        return overallResponse
     }
 }

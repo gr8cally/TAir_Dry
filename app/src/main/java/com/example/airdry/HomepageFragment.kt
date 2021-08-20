@@ -21,6 +21,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import kotlinx.android.synthetic.main.homepage_fragment.*
 import kotlinx.android.synthetic.main.homepage_fragment.view.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,6 +30,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class HomepageFragment : Fragment() {
+
+
 
 
     private var weatherData: TextView? = null
@@ -52,6 +55,9 @@ class HomepageFragment : Fragment() {
         val adapter = DryTimeRecyclerViewAdapter(
             DryTimeEntry.initProductEntryList(), activity as AppCompatActivity)
         view.recycler_view.adapter = adapter
+        Log.d("uku", (parentFragmentManager.findFragmentById(R.id.autocomplete_fragment1)== null).toString() )
+        //Log.d("uku1", (supportFragmentManager.findFragmentById(R.id.fragment_container)))
+        parentFragmentManager.findFragmentById(R.id.autocomplete_fragment1)
         //view.textViewsr.text = "Long"
         //retrobut(view.textViewsr)
         //placesFind()

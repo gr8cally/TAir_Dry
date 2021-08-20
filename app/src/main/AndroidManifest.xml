@@ -12,10 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AirDry">
+        <activity android:name=".RecommendActivity"></activity>
         <activity
             android:name=".TesterActivity"
             android:label="@string/title_activity_tester"
-            android:theme="@style/Theme.AirDry.NoActionBar"></activity>
+            android:theme="@style/Theme.AirDry.NoActionBar" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,8 +1,10 @@
 package com.example.airdry.Network
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
-class ForecastResponse {
+class ForecastResponse () : Parcelable {
     @SerializedName("hourly")
     var hourly = ArrayList<Hourly>()
     @SerializedName("current")
@@ -11,6 +13,31 @@ class ForecastResponse {
     var lat: Float = 0.toFloat()
     @SerializedName("lon")
     var lon: Float = 0.toFloat()
+
+    constructor(parcel: Parcel) : this() {
+        lat = parcel.readFloat()
+        lon = parcel.readFloat()
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeFloat(lat)
+        parcel.writeFloat(lon)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<ForecastResponse> {
+        override fun createFromParcel(parcel: Parcel): ForecastResponse {
+            return ForecastResponse(parcel)
+        }
+
+        override fun newArray(size: Int): Array<ForecastResponse?> {
+            return arrayOfNulls(size)
+        }
+    }
+
 }
 
 class Hourly {

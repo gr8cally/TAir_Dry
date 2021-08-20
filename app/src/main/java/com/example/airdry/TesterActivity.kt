@@ -43,7 +43,7 @@ class TesterActivity : AppCompatActivity() {
         //Create a new places client instance
         val placesClient: PlacesClient = Places.createClient(this)
 
-        //initialize the AutocompleteSupportFragment
+                //initialize the AutocompleteSupportFragment
         val autocompleteFragment =
             supportFragmentManager.findFragmentById(R.id.autocomplete_fragment)
                     as AutocompleteSupportFragment
